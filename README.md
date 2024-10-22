@@ -21,6 +21,9 @@ or for one:
 
 ##### **PORT: 3001**
 
+Sydekiq Monitor: localhost:3001/sidekiq
+
 Postman collections and environment variables are in the /postman folder
 
 Github Actions: Rubocop and Rspec. Brakeman turned off
+
