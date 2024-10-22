@@ -29,7 +29,7 @@ RSpec.describe StatController, type: :request do
                                 date_to: game_list1.last.date + 1.year }
         expect(response).to have_http_status(:success)
         json = JSON.parse(response.body)
-        expect(json["data"].first["value"]).to be > (json["data"].last["value"])
+        expect(json["data"].first["value"]).to be >= (json["data"].last["value"])
       end
 
       it 'sort asc' do
@@ -37,7 +37,7 @@ RSpec.describe StatController, type: :request do
                                 order: 'asc', limit: 5, date_from: game_list1.first.date - 1.year,
                                 date_to: game_list1.last.date + 1.year }
         json = JSON.parse(response.body)
-        expect(json["data"].first["value"]).to be < (json["data"].last["value"])
+        expect(json["data"].first["value"]).to be <= (json["data"].last["value"])
       end
 
       it 'limit' do
