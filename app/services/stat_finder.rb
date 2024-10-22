@@ -13,7 +13,7 @@ class StatFinder
 
   def call
     teams = team_id.present? ? Team.where(id: team_id) : Team.all
-    games_by_dates = Rails.cache.fetch([ "games", date_from, date_to, team_id], expires_in: 15.minute) do
+    games_by_dates = Rails.cache.fetch([ "games", date_from, date_to, team_id ], expires_in: 15.minute) do
       Game.where(date: date_from..date_to)
     end
     games = games_by_dates.where(win_team: teams).or(Game.where(second_team: teams))

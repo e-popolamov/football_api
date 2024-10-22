@@ -8,6 +8,7 @@ gem "bootsnap", require: false
 gem "jsonapi-serializer"
 gem "kaminari"
 gem "sidekiq", "~> 7.3", ">= 7.3.2"
+gem "observer"
 
 group :development, :test do
   gem "dotenv-rails"

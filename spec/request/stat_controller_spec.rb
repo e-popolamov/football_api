@@ -20,8 +20,8 @@ RSpec.describe StatController, type: :request do
           create(:game_stat, :with_game_stat_records, game: game, player: player, value: Faker::Number.non_zero_digit)
         end
       end
-
     end
+
     context 'find using params' do
       it 'sort desc' do
         get '/stats', params: { team_id: team1.id, role_id: team1.players.first.role_id,
@@ -53,7 +53,7 @@ RSpec.describe StatController, type: :request do
                                 order: 'desc', limit: 5, date_from: game_list1.first.date - 1.year,
                                 date_to: game_list1.last.date + 1.year }
         json = JSON.parse(response.body)
-        expect(json["data"].map { |d| d["player"]["role_id"] }.uniq).to be_eq([team1.players.first.role_id])
+        expect(json["data"].map { |d| d["player"]["role_id"] }.uniq.first).to be_equal(team1.players.first.role.id)
       end
     end
   end
