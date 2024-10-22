@@ -1,0 +1,66 @@
+version: "3.9"
+
+networks:
+  backend:
+
+services:
+  db:
+    image: postgres:16-alpine
+    networks:
+      - backend
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    restart: unless-stopped
+
+  redis:
+    image: redis:latest
+    networks:
+      - backend
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+
+  sidekiq:
+    build:
+      context: ./
+      dockerfile: Dockerfile_Sidekiq
+    command: bundle exec sidekiq
+    volumes:
+      - ./:/app
+    networks:
+      - backend
+    depends_on:
+      - db
+      - redis
+      - backend
+    env_file: .env.development_docker
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+
+  backend:
+    networks:
+      - backend
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/myapp
+    depends_on:
+      - db
+    ports:
+      - "3001:3001"
+    restart: unless-stopped
+    env_file: .env.development_docker
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      DATABASE_HOST: db
+
+volumes:
+  postgres_data:
+  redis_data:
+
